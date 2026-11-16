@@ -21,24 +21,39 @@ IMDb-style movie catalogue web app with users, reviews, people pages, and contri
 
 ## Setup
 
-1. Install [Node.js](https://nodejs.org/) and [MongoDB](https://www.mongodb.com/try/download/community) (or MongoDB Compass for local imports).
-2. Install dependencies from the project root:
+1. Clone the repo and enter the project folder:
+
+```bash
+git clone https://github.com/SatyanThayaparan/samze-movie-database.git
+cd samze-movie-database
+```
+
+2. Install [Node.js](https://nodejs.org/) and [MongoDB Community](https://www.mongodb.com/try/download/community). Start the MongoDB service so `mongodb://localhost:27017` is reachable.
+3. Install npm dependencies:
 
 ```bash
 npm install
 ```
 
-3. Start MongoDB locally, then import seed data (`movies.json`, `users.json`, `reviews.json`) into your collections via Compass or `mongoimport`.
-4. Confirm the Mongo connection string in the server config matches your local instance (default is often `mongodb://localhost:27017`).
+4. Seed the `movieDB` database (from the project root, with MongoDB running):
+
+```bash
+mongoimport --db movieDB --collection movies --file movies.json --jsonArray
+mongoimport --db movieDB --collection users --file users.json --jsonArray
+mongoimport --db movieDB --collection reviews --file reviews.json --jsonArray
+```
+
+Or use MongoDB Compass: connect to `mongodb://localhost:27017`, create database `movieDB`, then import each JSON file into the matching collection.
+
 5. Start the server:
 
 ```bash
 npm start
 ```
 
-## Usage
+6. Open `http://127.0.0.1:3000` (or the URL printed in the terminal).
 
-Open `http://127.0.0.1:3000` (or the URL printed by the server).
+## Usage
 
 - Browse movie and people lists without an account
 - Register / log in to review, follow, and track watched movies
@@ -48,13 +63,14 @@ Open `http://127.0.0.1:3000` (or the URL printed by the server).
 
 ```text
 samze-movie-database/
-├── server.js                 # Express entrypoint
+├── server.js                 # Express entrypoint (DB: movieDB)
 ├── businessLogic/            # users, search, contributing logic
 ├── public/                   # static assets and client scripts
+├── movies.json / users.json / reviews.json
 ├── *-router.js               # route modules
 └── package.json
 ```
 
 ## Notes
 
-- Seed JSON files and router modules expect a running MongoDB instance before first use.
+- The server expects MongoDB at `mongodb://localhost:27017` and database name `movieDB`.
